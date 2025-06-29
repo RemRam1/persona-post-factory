@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Plus, Trash2 } from 'lucide-react';
 import { PersonaCard } from '@/components/PersonaCard';
@@ -18,6 +18,19 @@ export const PersonaPage = () => {
   const [checkedPersonas, setCheckedPersonas] = useState<Set<string>>(new Set());
   const { toast } = useToast();
 
+  // 从localStorage加载人设数据
+  useEffect(() => {
+    const savedPersonas = localStorage.getItem('personas');
+    if (savedPersonas) {
+      setPersonas(JSON.parse(savedPersonas));
+    }
+  }, []);
+
+  // 保存人设数据到localStorage
+  const savePersonasToStorage = (newPersonas: Persona[]) => {
+    localStorage.setItem('personas', JSON.stringify(newPersonas));
+  };
+
   const handleAddPersona = async (data: PersonaData) => {
     setLoading(true);
     try {
@@ -35,7 +48,9 @@ export const PersonaPage = () => {
         createdAt: new Date().toISOString()
       };
 
-      setPersonas(prev => [...prev, newPersona]);
+      const updatedPersonas = [...personas, newPersona];
+      setPersonas(updatedPersonas);
+      savePersonasToStorage(updatedPersonas);
       setShowAddModal(false);
       toast({
         title: "人设生成成功",
@@ -75,7 +90,9 @@ export const PersonaPage = () => {
   const handleDeleteSelected = () => {
     if (checkedPersonas.size === 0) return;
     
-    setPersonas(prev => prev.filter(persona => !checkedPersonas.has(persona.id)));
+    const updatedPersonas = personas.filter(persona => !checkedPersonas.has(persona.id));
+    setPersonas(updatedPersonas);
+    savePersonasToStorage(updatedPersonas);
     setCheckedPersonas(new Set());
     setDeleteMode(false);
     
