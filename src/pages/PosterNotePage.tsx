@@ -60,10 +60,13 @@ export const PosterNotePage = () => {
   if (personas.length === 0) {
     return (
       <div className="container mx-auto p-6">
-        <h1 className="text-3xl font-bold mb-6">大字报封面笔记</h1>
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold">大字报封面笔记</h1>
+          <Separator className="mt-4" />
+        </div>
         <div className="text-center py-12">
           <p className="text-muted-foreground mb-4">请先生成人设后才能生产内容笔记</p>
-          <Button onClick={() => navigate('/persona')}>
+          <Button onClick={() => navigate('/persona')} className="bg-slate-950 hover:bg-slate-800">
             前往人设生产
           </Button>
         </div>
@@ -73,10 +76,16 @@ export const PosterNotePage = () => {
 
   return (
     <div className="container mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-6">大字报封面笔记</h1>
-      
       <div className="mb-6">
-        <h2 className="text-xl font-semibold mb-4">选择人设</h2>
+        <h1 className="text-3xl font-bold">大字报封面笔记</h1>
+        <Separator className="mt-4" />
+      </div>
+      
+      <div className="mb-8">
+        <div className="mb-4">
+          <h2 className="text-xl font-semibold">选择人设</h2>
+          <Separator className="mt-2" />
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {personas.map((persona) => (
             <PersonaCard
@@ -90,8 +99,12 @@ export const PosterNotePage = () => {
       </div>
 
       {selectedPersona && (
-        <div className="mb-6">
-          <Button onClick={handleGenerateNote} disabled={loading}>
+        <div className="mb-8">
+          <Button 
+            onClick={handleGenerateNote} 
+            disabled={loading}
+            className="bg-slate-950 hover:bg-slate-800"
+          >
             {loading ? '生成中...' : '生成大字报笔记'}
           </Button>
         </div>
@@ -99,7 +112,10 @@ export const PosterNotePage = () => {
 
       {notes.length > 0 && (
         <div>
-          <h2 className="text-xl font-semibold mb-4">生成的笔记</h2>
+          <div className="mb-4">
+            <h2 className="text-xl font-semibold">生成的笔记</h2>
+            <Separator className="mt-2" />
+          </div>
           <div className="grid grid-cols-1 gap-6">
             {notes.map((note) => (
               <Card key={note.id} className="max-w-4xl">
@@ -125,6 +141,7 @@ export const PosterNotePage = () => {
                   <div className="space-y-4">
                     <div>
                       <div className="text-sm font-medium text-muted-foreground mb-2">正文内容</div>
+                      <Separator className="mb-4" />
                       <div className="bg-gray-50 p-4 rounded-lg">
                         <div className="text-sm whitespace-pre-wrap leading-relaxed">
                           {note.content}
