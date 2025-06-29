@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -6,14 +5,14 @@ import { LoginModal } from '@/components/LoginModal';
 import { useAuth } from '@/hooks/useAuth';
 import { LogOut, User, FileText, Image, Users } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-
 const Index = () => {
   const [showLoginModal, setShowLoginModal] = useState(false);
-  const { user, logout } = useAuth();
+  const {
+    user,
+    logout
+  } = useAuth();
   const navigate = useNavigate();
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+  return <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
       {/* Header */}
       <header className="border-b bg-white/80 backdrop-blur-sm">
         <div className="container mx-auto px-6 py-4 flex items-center justify-between">
@@ -24,25 +23,16 @@ const Index = () => {
             <h1 className="text-xl font-bold">社交媒体内容工厂</h1>
           </div>
           
-          {user ? (
-            <div className="flex items-center space-x-4">
+          {user ? <div className="flex items-center space-x-4">
               <span className="text-sm text-muted-foreground">欢迎，{user.username}</span>
-              <Button 
-                variant="outline" 
-                size="sm"
-                onClick={logout}
-                className="flex items-center space-x-2"
-              >
+              <Button variant="outline" size="sm" onClick={logout} className="flex items-center space-x-2">
                 <LogOut className="w-4 h-4" />
                 <span>退出登录</span>
               </Button>
-            </div>
-          ) : (
-            <Button onClick={() => setShowLoginModal(true)}>
+            </div> : <Button onClick={() => setShowLoginModal(true)}>
               <User className="w-4 h-4 mr-2" />
               登录
-            </Button>
-          )}
+            </Button>}
         </div>
       </header>
 
@@ -55,12 +45,8 @@ const Index = () => {
           </p>
         </div>
 
-        {user ? (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            <Card 
-              className="cursor-pointer hover:shadow-lg transition-shadow"
-              onClick={() => navigate('/persona')}
-            >
+        {user ? <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => navigate('/persona')}>
               <CardHeader>
                 <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
                   <Users className="w-6 h-6 text-blue-600" />
@@ -75,10 +61,7 @@ const Index = () => {
               </CardContent>
             </Card>
 
-            <Card 
-              className="cursor-pointer hover:shadow-lg transition-shadow"
-              onClick={() => navigate('/poster-note')}
-            >
+            <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => navigate('/poster-note')}>
               <CardHeader>
                 <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
                   <FileText className="w-6 h-6 text-green-600" />
@@ -89,14 +72,11 @@ const Index = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <Button className="w-full" variant="outline">制作大字报</Button>
+                <Button variant="outline" className="w-full bg-slate-950 hover:bg-slate-800">制作大字报</Button>
               </CardContent>
             </Card>
 
-            <Card 
-              className="cursor-pointer hover:shadow-lg transition-shadow"
-              onClick={() => navigate('/image-note')}
-            >
+            <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => navigate('/image-note')}>
               <CardHeader>
                 <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
                   <Image className="w-6 h-6 text-purple-600" />
@@ -110,23 +90,15 @@ const Index = () => {
                 <Button className="w-full" variant="outline">制作图文笔记</Button>
               </CardContent>
             </Card>
-          </div>
-        ) : (
-          <div className="text-center">
+          </div> : <div className="text-center">
             <p className="text-muted-foreground mb-6">请先登录以使用所有功能</p>
             <Button onClick={() => setShowLoginModal(true)} size="lg">
               立即登录
             </Button>
-          </div>
-        )}
+          </div>}
       </main>
 
-      <LoginModal 
-        open={showLoginModal} 
-        onOpenChange={setShowLoginModal}
-      />
-    </div>
-  );
+      <LoginModal open={showLoginModal} onOpenChange={setShowLoginModal} />
+    </div>;
 };
-
 export default Index;
