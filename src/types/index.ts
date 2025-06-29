@@ -1,4 +1,3 @@
-
 export interface User {
   id: string;
   email: string;
@@ -41,3 +40,20 @@ export interface ImageNote {
   personaId: string;
   createdAt: string;
 }
+
+// 辅助函数
+export const getSelectedPersonaIds = (note: PosterNote | ImageNote): string[] => {
+  return note.personaId.split(',');
+};
+
+export const isMultiPersona = (note: PosterNote | ImageNote): boolean => {
+  return getSelectedPersonaIds(note).length > 1;
+};
+
+export const getPersonaNames = (note: PosterNote | ImageNote, personas: Persona[]): string => {
+  const ids = getSelectedPersonaIds(note);
+  return personas
+    .filter(p => ids.includes(p.id))
+    .map(p => p.Nickname)
+    .join('、');
+};

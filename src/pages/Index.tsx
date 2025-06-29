@@ -68,11 +68,11 @@ const Index = () => {
                 </div>
                 <CardTitle>大字报封面笔记</CardTitle>
                 <CardDescription>
-                  生成吸引眼球的大字报风格封面笔记内容
+                  生成吸引眼球的小红书大字报风格封面笔记内容
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <Button variant="outline" className="w-full bg-slate-950 hover:bg-slate-800">制作大字报</Button>
+                <Button className="w-full">制作大字报</Button>
               </CardContent>
             </Card>
 
@@ -83,11 +83,11 @@ const Index = () => {
                 </div>
                 <CardTitle>图文笔记</CardTitle>
                 <CardDescription>
-                  创建图文并茂的社交媒体笔记内容
+                  创建小红书多图笔记内容，图片源于数据爬取
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <Button className="w-full" variant="outline">制作图文笔记</Button>
+                <Button className="w-full">制作图文笔记</Button>
               </CardContent>
             </Card>
           </div> : <div className="text-center">
