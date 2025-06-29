@@ -1,16 +1,21 @@
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Plus } from 'lucide-react';
+import { Plus, Trash2 } from 'lucide-react';
 import { PersonaCard } from '@/components/PersonaCard';
 import { AddPersonaModal } from '@/components/AddPersonaModal';
+import { PersonaPreviewModal } from '@/components/PersonaPreviewModal';
 import { Persona, PersonaData } from '@/types';
 import { useToast } from '@/hooks/use-toast';
 
 export const PersonaPage = () => {
   const [personas, setPersonas] = useState<Persona[]>([]);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showPreviewModal, setShowPreviewModal] = useState(false);
+  const [selectedPersona, setSelectedPersona] = useState<Persona | null>(null);
   const [loading, setLoading] = useState(false);
+  const [deleteMode, setDeleteMode] = useState(false);
+  const [checkedPersonas, setCheckedPersonas] = useState<Set<string>>(new Set());
   const { toast } = useToast();
 
   const handleAddPersona = async (data: PersonaData) => {
@@ -47,19 +52,90 @@ export const PersonaPage = () => {
     }
   };
 
+  const handlePersonaPreview = (persona: Persona) => {
+    setSelectedPersona(persona);
+    setShowPreviewModal(true);
+  };
+
+  const handleDeleteMode = () => {
+    setDeleteMode(!deleteMode);
+    setCheckedPersonas(new Set());
+  };
+
+  const handlePersonaCheck = (personaId: string, checked: boolean) => {
+    const newChecked = new Set(checkedPersonas);
+    if (checked) {
+      newChecked.add(personaId);
+    } else {
+      newChecked.delete(personaId);
+    }
+    setCheckedPersonas(newChecked);
+  };
+
+  const handleDeleteSelected = () => {
+    if (checkedPersonas.size === 0) return;
+    
+    setPersonas(prev => prev.filter(persona => !checkedPersonas.has(persona.id)));
+    setCheckedPersonas(new Set());
+    setDeleteMode(false);
+    
+    toast({
+      title: "删除成功",
+      description: `已删除 ${checkedPersonas.size} 个人设`,
+    });
+  };
+
   return (
     <div className="container mx-auto p-6">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-3xl font-bold">人设生产</h1>
-        <Button onClick={() => setShowAddModal(true)}>
-          <Plus className="w-4 h-4 mr-2" />
-          添加人设
-        </Button>
+        <div className="flex gap-2">
+          {deleteMode ? (
+            <>
+              <Button 
+                variant="outline" 
+                onClick={handleDeleteMode}
+              >
+                取消
+              </Button>
+              <Button 
+                variant="destructive" 
+                onClick={handleDeleteSelected}
+                disabled={checkedPersonas.size === 0}
+              >
+                删除选中 ({checkedPersonas.size})
+              </Button>
+            </>
+          ) : (
+            <>
+              {personas.length > 0 && (
+                <Button 
+                  variant="outline" 
+                  onClick={handleDeleteMode}
+                >
+                  <Trash2 className="w-4 h-4 mr-2" />
+                  删除
+                </Button>
+              )}
+              <Button onClick={() => setShowAddModal(true)}>
+                <Plus className="w-4 h-4 mr-2" />
+                添加人设
+              </Button>
+            </>
+          )}
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {personas.map((persona) => (
-          <PersonaCard key={persona.id} persona={persona} />
+          <PersonaCard 
+            key={persona.id} 
+            persona={persona}
+            onPreview={deleteMode ? undefined : () => handlePersonaPreview(persona)}
+            showCheckbox={deleteMode}
+            isChecked={checkedPersonas.has(persona.id)}
+            onCheck={(checked) => handlePersonaCheck(persona.id, checked)}
+          />
         ))}
       </div>
 
@@ -78,6 +154,12 @@ export const PersonaPage = () => {
         onOpenChange={setShowAddModal}
         onSubmit={handleAddPersona}
         loading={loading}
+      />
+
+      <PersonaPreviewModal
+        open={showPreviewModal}
+        onOpenChange={setShowPreviewModal}
+        persona={selectedPersona}
       />
     </div>
   );
