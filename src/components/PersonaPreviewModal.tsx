@@ -2,6 +2,7 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
 import { useNavigate } from 'react-router-dom';
 import { Persona } from '@/types';
 
@@ -41,6 +42,8 @@ export const PersonaPreviewModal = ({ open, onOpenChange, persona }: PersonaPrev
             <p className="text-sm">{persona.Job}</p>
           </div>
           
+          <Separator />
+          
           <div>
             <h4 className="font-medium text-sm text-muted-foreground mb-2">人设详情</h4>
             <div className="bg-gray-50 p-4 rounded-lg">
@@ -53,13 +56,14 @@ export const PersonaPreviewModal = ({ open, onOpenChange, persona }: PersonaPrev
 
         <DialogFooter className="flex flex-col sm:flex-row gap-2">
           <Button 
-            variant="outline" 
+            variant="default" 
             onClick={() => handleNextStep('poster')}
             className="flex-1"
           >
             生成大字报笔记
           </Button>
           <Button 
+            variant="default"
             onClick={() => handleNextStep('image')}
             className="flex-1"
           >

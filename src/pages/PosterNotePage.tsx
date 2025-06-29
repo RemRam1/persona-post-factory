@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
 import { PersonaCard } from '@/components/PersonaCard';
 import { Persona, PosterNote } from '@/types';
 import { useToast } from '@/hooks/use-toast';
@@ -99,16 +100,43 @@ export const PosterNotePage = () => {
       {notes.length > 0 && (
         <div>
           <h2 className="text-xl font-semibold mb-4">生成的笔记</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 gap-6">
             {notes.map((note) => (
-              <Card key={note.id}>
-                <CardHeader>
-                  <CardTitle>{note.title}</CardTitle>
-                  <div className="text-lg font-medium text-primary">{note.coverTitle}</div>
+              <Card key={note.id} className="max-w-4xl">
+                <CardHeader className="pb-4">
+                  <div className="space-y-4">
+                    <div>
+                      <div className="text-sm font-medium text-muted-foreground mb-1">笔记标题</div>
+                      <CardTitle className="text-xl">{note.title}</CardTitle>
+                    </div>
+                    
+                    <Separator />
+                    
+                    <div>
+                      <div className="text-sm font-medium text-muted-foreground mb-1">封面标题</div>
+                      <div className="text-lg font-semibold text-primary bg-primary/5 px-3 py-2 rounded-md">
+                        {note.coverTitle}
+                      </div>
+                    </div>
+                  </div>
                 </CardHeader>
-                <CardContent>
-                  <div className="text-sm whitespace-pre-wrap line-clamp-6">
-                    {note.content}
+                
+                <CardContent className="pt-0">
+                  <div className="space-y-4">
+                    <div>
+                      <div className="text-sm font-medium text-muted-foreground mb-2">正文内容</div>
+                      <div className="bg-gray-50 p-4 rounded-lg">
+                        <div className="text-sm whitespace-pre-wrap leading-relaxed">
+                          {note.content}
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <Separator />
+                    
+                    <div className="text-xs text-muted-foreground">
+                      生成时间: {new Date(note.createdAt).toLocaleString()}
+                    </div>
                   </div>
                 </CardContent>
               </Card>
